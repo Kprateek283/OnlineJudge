@@ -35,26 +35,6 @@ const executePythonCode = (codePath, inputPath, outputPath, hasInput, callback) 
   exec(runCmd, callback);
 };
 
-const executeJavaCode = (codePath, inputPath, outputPath, hasInput, callback) => {
-  const className = path.basename(codePath, '.java'); // Assuming the class name is the same as the file name
-  const compileCmd = `javac ${codePath}`;
-  const runCmd = `java -cp ${path.dirname(codePath)} ${className}${hasInput ? ` < ${inputPath}` : ''} > ${outputPath}`;
-
-  exec(`${compileCmd} && ${runCmd}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error during compilation or execution: ${error.message}`);
-      callback(error, null);
-      return;
-    }
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      callback(new Error(stderr), null);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-    callback(null, stdout);
-  });
-};
 
 const executeCode = (language, codePath, inputPath, outputPath, hasInput, callback) => {
   switch (language) {
